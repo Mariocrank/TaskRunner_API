@@ -1,0 +1,6 @@
+.venv
+.github
+*.sqlite3
+*.log
+*.pyc
+__pycache__/
