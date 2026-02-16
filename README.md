@@ -1,237 +1,113 @@
-TaskRunner API
-
-API REST para la gestión de tareas académicas desarrollada con Django y Django REST Framework.
-
-Este proyecto funciona como backend base para registrar, consultar, actualizar y eliminar tareas escolares mediante endpoints REST. Está pensado como una práctica académica enfocada en comprender la estructura de una API, la separación de responsabilidades y la correcta documentación técnica del proceso.
-
-Objetivo del proyecto
-
-El objetivo de este proyecto es aplicar conceptos fundamentales de desarrollo backend, específicamente:
-
-Configuración correcta de rutas (endpoints).
-
-Separación básica entre rutas y lógica de negocio.
-
-Implementación de controladores simples.
-
-Documentación clara y replicable del proceso técnico.
-
-El proyecto está diseñado para ejecutarse localmente y servir como base para futuras ampliaciones.
-
-Descripción general
-
-TaskRunner API centraliza la lógica relacionada con la gestión de tareas académicas.
-En esta primera versión, el sistema permite realizar operaciones CRUD sobre tareas utilizando una API REST que responde en formato JSON.
-
-No se incluye autenticación ni lógica avanzada, ya que el enfoque está en la estructura y claridad del backend.
-
-Alcance técnico (MVP)
-Recurso principal
-
-Tasks (tareas)
-
-Operaciones REST implementadas
-
-GET /api/tasks/
-Lista todas las tareas registradas.
-
-POST /api/tasks/
-Crea una nueva tarea.
-
-GET /api/tasks/{id}/
-Obtiene el detalle de una tarea específica.
-
-PUT /api/tasks/{id}/
-Actualiza una tarea existente.
-
-DELETE /api/tasks/{id}/
-Elimina una tarea.
-
-Este conjunto de endpoints cumple con el uso correcto de métodos HTTP, convenciones REST y respuestas en formato JSON.
-
-Reglas de negocio iniciales
-
-Toda tarea debe tener un título.
-
-La descripción es opcional.
-
-Las tareas pueden crearse, editarse y eliminarse desde la API.
-
-Cada tarea tiene un identificador único.
-
-Las respuestas de la API son en formato JSON.
-
-Se utiliza SQLite como base de datos local para desarrollo.
-
-Configuración de rutas y controladores
-Estructura del proyecto
-TaskRunner-API/
-│
-├── manage.py
-├── requirements.txt
-├── db.sqlite3
-│
-├── taskrunner/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-│
-├── tasks/
-│   ├── migrations/
-│   ├── models.py
-│   ├── serializers.py
-│   ├── views.py
-│   └── urls.py
-│
-└── README.md
-
-Responsabilidad de cada parte
-
-taskrunner/urls.py
-Archivo principal de rutas del proyecto. Aquí se registran las rutas generales y se conecta la app tasks.
-
-tasks/urls.py
-Define las rutas específicas del recurso tareas (/api/tasks/).
-
-tasks/views.py
-Contiene los controladores que manejan la lógica de cada endpoint.
-
-Esta separación permite que las rutas solo se encarguen de direccionar las peticiones, mientras que la lógica de negocio se mantiene en los controladores.
-
-Paso a paso técnico
-
-Se creó el proyecto Django con django-admin startproject.
-
-Se creó la aplicación tasks para manejar el recurso principal.
-
-Se definió el modelo Task en models.py.
-
-Se creó un serializer para convertir los datos a JSON.
-
-Se implementaron los controladores en views.py.
-
-Se configuraron las rutas del recurso en tasks/urls.py.
-
-Las rutas de la app se registraron en taskrunner/urls.py.
-
-Este flujo permite mantener el proyecto organizado y fácil de escalar.
-
-Endpoints implementados
-Crear tarea
-
-POST /api/tasks/
-
-Request:
-
-{
-  "title": "Entregar actividad de backend",
-  "description": "API con Django REST Framework"
-}
-
-
-Response (201):
-
-{
-  "id": 1,
-  "title": "Entregar actividad de backend",
-  "description": "API con Django REST Framework"
-}
-
-Listar tareas
-
-GET /api/tasks/
-
-Response (200):
-
-[
-  {
-    "id": 1,
-    "title": "Entregar actividad de backend",
-    "description": "API con Django REST Framework"
-  }
-]
-
-Obtener una tarea
-
-GET /api/tasks/{id}/
-
-Actualizar una tarea
-
-PUT /api/tasks/{id}/
-
-Eliminar una tarea
-
-DELETE /api/tasks/{id}/
-
-Cómo probar la API
-Levantar el servidor
-
-Crear entorno virtual:
-
-Windows:
-
-python -m venv venv
-venv\Scripts\activate
-
-
-Linux / macOS:
-
-python3 -m venv venv
-source venv/bin/activate
-
-
-Instalar dependencias:
-
+# TaskRunner API
+
+Backend REST construido con Django y Django REST Framework para gestionar tareas.
+
+## Estado actual
+
+- Proyecto Django activo en `backend/`
+- Recurso expuesto: `Task` (CRUD completo via `ModelViewSet`)
+- Autenticacion JWT habilitada (`SimpleJWT`)
+- Documentacion OpenAPI disponible con `drf-spectacular`
+- Base de datos local: SQLite
+
+## Estructura del proyecto
+
+```text
+TaskRunner_API/
+|-- backend/
+|   |-- manage.py
+|   |-- db.sqlite3
+|   |-- config/
+|   |   |-- settings.py
+|   |   `-- urls.py
+|   |-- runner/
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- views.py
+|   |   `-- urls.py
+|   `-- users/
+`-- requirements.txt
+```
+
+Nota: en la raiz existe otro `manage.py`, pero el backend funcional que usa `runner` y `users` es `backend/manage.py`.
+
+## Requisitos
+
+- Python 3.12+ (recomendado)
+- Entorno virtual
+
+## Instalacion y ejecucion
+
+### Windows (PowerShell)
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+.\.venv\Scripts\python.exe backend\manage.py migrate
+.\.venv\Scripts\python.exe backend\manage.py runserver
+```
 
+Servidor local: `http://127.0.0.1:8000/`
 
-Ejecutar migraciones:
+## Endpoints principales
 
-python manage.py migrate
+### CRUD de tareas
 
+- `GET /api/tasks/`
+- `POST /api/tasks/`
+- `GET /api/tasks/{id}/`
+- `PUT /api/tasks/{id}/`
+- `PATCH /api/tasks/{id}/`
+- `DELETE /api/tasks/{id}/`
 
-Iniciar servidor:
+### Autenticacion JWT
 
-python manage.py runserver
+- `POST /api/token/` (obtener access y refresh)
+- `POST /api/token/refresh/` (renovar access)
 
+### Documentacion
 
-Servidor local:
+- `GET /api/schema/` (OpenAPI schema)
+- `GET /api/docs/` (Swagger UI)
+- `GET /api/redoc/` (ReDoc)
 
-http://127.0.0.1:8000/
+## Modelo Task (actual)
 
+Campos expuestos por la API:
 
-Los endpoints pueden probarse desde el navegador, Postman o usando curl.
+- `id`
+- `task_master_id` (unico)
+- `title`
+- `description` (opcional)
+- `status` (default: `pending`)
+- `assigned_at` (auto)
+- `completed_at` (opcional)
 
-Tecnologías utilizadas
+## Ejemplo de creacion de tarea
 
-Python
+```json
+{
+  "task_master_id": "TM-001",
+  "title": "Preparar entrega final",
+  "description": "Actualizar README y validar endpoints",
+  "status": "pending"
+}
+```
 
-Django
+## CORS (desarrollo)
 
-Django REST Framework
+Origenes permitidos actualmente:
 
-SQLite
+- `http://127.0.0.1:5500`
+- `http://localhost:5500`
+- `http://127.0.0.1:5501`
+- `http://localhost:5501`
 
-Git y GitHub
+## Dependencias principales
 
-Visual Studio Code
-
-Autor
-
-Mario Quiñones Castro
-Estudiante universitario de Software
-
-Notas finales
-
-Este proyecto sirve como base para seguir ampliando funcionalidades, tales como:
-
-Autenticación de usuarios
-
-Asignación de tareas por usuario
-
-Manejo de estados y prioridades
-
-Integración con un frontend web o móvil
-
-El enfoque principal del proyecto es reforzar el aprendizaje del desarrollo backend utilizando Django REST Framework
+- Django 6.0.1
+- djangorestframework 3.16.1
+- djangorestframework_simplejwt 5.5.1
+- drf-spectacular 0.29.0
+- django-cors-headers 4.9.0
