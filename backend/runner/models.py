@@ -8,6 +8,7 @@ class Task(models.Model):
 	title = models.CharField(max_length=255)
 	description = models.TextField(blank=True)
 	status = models.CharField(max_length=50, default='pending')
+	attachment = models.FileField(upload_to='tasks/', null=True, blank=True)
 	assigned_at = models.DateTimeField(auto_now_add=True)
 	completed_at = models.DateTimeField(null=True, blank=True)
 
